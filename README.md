@@ -2,6 +2,32 @@
 
 A password-protected, single-page web app that serves a curated Markdown file (game server IPs, passwords, notes) behind a server-side auth gate. The content is only ever read, compiled and rendered on the server, after a valid session is verified - it never reaches the client unless the visitor has authenticated.
 
+## Install on Proxmox LXC
+
+Run this in the Proxmox VE Shell. It creates an unprivileged Debian 12 LXC,
+installs Node.js + pnpm, builds the app, prompts for the vault password and
+starts it as a systemd service on `:3000`:
+
+```sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/RainingDaemons/gamevault/main/gamevault.sh)"
+```
+
+After install:
+
+- **Vault password** is prompted for during install and stored as an Argon2id
+  hash in `/etc/gamevault/gamevault.env` (root-only, `0600`).
+- **Server list** lives at `/etc/gamevault/servers.md`, outside the repo and
+  outside `static/`. Edit it with your real servers — it is never committed to
+  git and is only read after a valid session.
+- The service listens on `http://<lxc-ip>:3000`. Expose it via your existing
+  `cloudflared` tunnel (map to `http://<lxc-ip>:3000`).
+
+```sh
+# update the app in-place
+pct enter <CTID>
+update
+```
+
 ## Stack
 
 - SvelteKit (Node adapter, self-hosted)

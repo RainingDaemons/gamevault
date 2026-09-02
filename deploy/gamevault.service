@@ -1,0 +1,15 @@
+[Unit]
+Description=GameVault Service
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/gamevault/gamevault.env
+WorkingDirectory=/opt/gamevault
+ExecStart=/usr/bin/node build/index.js
+Restart=always
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target
