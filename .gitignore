@@ -1,0 +1,32 @@
+node_modules
+
+# Editors
+.vscode
+
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Sensitive content (never commit)
+/content/servers.md
+
+# Runtime markdown compile cache
+.mdsvex-cache
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+/* --- Markdown content (rendered server-side via {@html}) --- */
+.markdown {
+	@apply font-sans leading-relaxed;
+}
+
+.markdown h1 {
+	@apply mb-6 font-mono text-2xl tracking-wide text-emerald-400;
+}
+
+.markdown h2 {
+	@apply mb-3 mt-10 border-b border-zinc-800 pb-2 font-mono text-xl text-zinc-100;
+}
+
+.markdown h3 {
+	@apply mb-2 mt-8 font-mono text-base text-zinc-200;
+}
+
+.markdown p {
+	@apply my-3 text-zinc-300;
+}
+
+.markdown strong {
+	@apply font-semibold text-zinc-100;
+}
+
+.markdown a {
+	@apply text-emerald-400 underline decoration-emerald-500/50 underline-offset-2;
+}
+
+.markdown ul {
+	@apply my-4 list-none space-y-2;
+}
+
+.markdown ul li {
+	@apply relative pl-5 text-zinc-300;
+}
+
+.markdown ul li::before {
+	content: "▸";
+	@apply absolute left-0 text-emerald-500;
+}
+
+.markdown ol {
+	@apply my-4 list-decimal pl-6 text-zinc-300;
+}
+
+.markdown code {
+	@apply rounded bg-zinc-800 px-1.5 py-0.5 font-mono text-sm text-emerald-300;
+}
+
+.markdown pre {
+	@apply my-4 overflow-x-auto rounded border border-zinc-800 bg-zinc-900/80 p-4;
+}
+
+.markdown pre code {
+	@apply bg-transparent p-0 text-sm text-zinc-200;
+}
+
+.markdown blockquote {
+	@apply my-4 border-l-2 border-emerald-500/50 pl-4 text-zinc-400;
+}
+
+.markdown hr {
+	@apply my-8 border-zinc-800;
+}
+
+.markdown table {
+	@apply my-4 w-full border-collapse text-sm;
+}
+
+.markdown th {
+	@apply border border-zinc-800 bg-zinc-900 px-3 py-2 text-left font-mono text-zinc-200;
+}
+
+.markdown td {
+	@apply border border-zinc-800 px-3 py-2 text-zinc-300;
+}
+
+/* --- Prism syntax highlighting (mdsvex default highlighter) --- */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: #6b7280;
+}
+
+.token.punctuation {
+	color: #9ca3af;
+}
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #93c5fd;
+}
+
+.token.boolean,
+.token.number {
+	color: #fbbf24;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #86efac;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #f9a8d4;
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #c4b5fd;
+}
+
+.token.function,
+.token.class-name {
+	color: #67e8f9;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #fca5a5;
+}
