@@ -35,6 +35,10 @@ function update_script() {
   cd /opt/gamevault
   git pull
   pnpm install --frozen-lockfile
+  set -a
+  # shellcheck disable=SC1090
+  source /etc/gamevault/gamevault.env
+  set +a
   pnpm build
   systemctl restart gamevault
   msg_ok "Updated ${APP}"

@@ -71,7 +71,7 @@ fi
 # check reject same-origin form submissions over plain HTTP. Pin the origin to
 # the container's primary IP so logins work on http://<ip>:3000.
 CT_IP="${IP:-$(hostname -I 2>/dev/null | awk '{print $1}')}"
-printf 'NODE_ENV=production\nPORT=3000\nORIGIN=http://%s:3000\nowner_name=%s\nSERVERS_MD_PATH=/etc/gamevault/servers.md\nSESSION_SECRET=%s\nPASSWORD_HASH=%s\n' \
+printf 'NODE_ENV=production\nPORT=3000\nORIGIN=http://%s:3000\nowner_name=%s\nSERVERS_MD_PATH=/etc/gamevault/servers.md\nSESSION_SECRET=%s\nPASSWORD_HASH=%s\n# Set this to your public domain(s) before a rebuild, one scheme-qualified origin per entry:\nCSRF_TRUSTED_ORIGINS=https://servers.rainingdaemons.com\n' \
   "${CT_IP}" "${GAMEVAULT_OWNER:-admin}" "$SESSION_SECRET" "$HASH" >/etc/gamevault/gamevault.env
 $STD chmod 600 /etc/gamevault/gamevault.env
 unset GAMEVAULT_PASSWORD
