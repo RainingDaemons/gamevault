@@ -40,7 +40,6 @@ msg_ok "Built Game Vault"
 
 msg_info "Creating Data Directory"
 $STD mkdir -p /etc/gamevault
-$STD chmod 750 /etc/gamevault
 if [[ ! -f /etc/gamevault/servers.md ]]; then
   cat >/etc/gamevault/servers.md <<'EOF'
 # Game Servers
@@ -52,7 +51,8 @@ read at request time and is never committed to git or served to unauthenticated
 visitors.
 EOF
 fi
-$STD chown root:www-data /etc/gamevault/servers.md
+$STD chown root:www-data /etc/gamevault
+$STD chmod 750 /etc/gamevault
 $STD chmod 640 /etc/gamevault/servers.md
 msg_ok "Created Data Directory"
 

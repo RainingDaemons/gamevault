@@ -22,12 +22,6 @@ After install:
 - The service listens on `http://<lxc-ip>:3000`. Expose it via your existing
   `cloudflared` tunnel (map to `http://<lxc-ip>:3000`).
 
-```sh
-# update the app in-place
-pct enter <CTID>
-update
-```
-
 ## Stack
 
 - SvelteKit (Node adapter, self-hosted)
@@ -42,21 +36,26 @@ update
 pnpm install
 ```
 
-1. Create your markdown content at `content/servers.md` (gitignored - never commit it).
+1. Create your markdown content at `/etc/gamevault/servers.md`.
 
-2. Generate an Argon2id hash of your shared password:
+2. Edit /etc/gamevault/gamevault.env:
 
-  ```sh
-  pnpm hash:password your-password
-  ```
-
-3. Create a `.env` file (see `.env.example`):
-
-  ```sh
-  PASSWORD_HASH=<hash from step 2>
-  SESSION_SECRET=<random 32+ bytes, e.g. `openssl rand -base64 32`>
+  ```env
   NODE_ENV=production
+  PORT=3000
+  owner_name=
+  SERVERS_MD_PATH=/etc/gamevault/servers.md
+  SESSION_SECRET=...
+  ORIGIN=http://192.168.100.66:3000
+  CSRF_TRUSTED_ORIGINS=
   ```
+
+With this command
+```sh
+hostname -I
+```
+
+Add LXC ip in ORIGIN, also specify trusted origins for CORS.
 
 ## Development
 
