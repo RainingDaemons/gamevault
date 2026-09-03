@@ -67,8 +67,12 @@ if [[ -z "$HASH" ]]; then
   msg_error "Failed to hash the vault password"
   exit 1
 fi
-printf 'NODE_ENV=production\nPORT=3000\nowner_name=%s\nSERVERS_MD_PATH=/etc/gamevault/servers.md\nSESSION_SECRET=%s\nPASSWORD_HASH=%s\n' \
-  "${GAMEVAULT_OWNER:-admin}" "$SESSION_SECRET" "$HASH" >/etc/gamevault/gamevault.env
+# adapter-node assumes HTTPS when ORIGIN is unset, which makes SvelteKit's CSRF
+# check reject same-origin form submissions over plain HTTP. Pin the origin to
+# the container's primary IP so logins work on http://<ip>:3000.
+CT_IP="${IP:-$(hostname -I 2>/dev/null | awk '{print $1}')}"
+printf 'NODE_ENV=production\nPORT=3000\nORIGIN=http://%s:3000\nowner_name=%s\nSERVERS_MD_PATH=/etc/gamevault/servers.md\nSESSION_SECRET=%s\nPASSWORD_HASH=%s\n' \
+  "${CT_IP}" "${GAMEVAULT_OWNER:-admin}" "$SESSION_SECRET" "$HASH" >/etc/gamevault/gamevault.env
 $STD chmod 600 /etc/gamevault/gamevault.env
 unset GAMEVAULT_PASSWORD
 msg_ok "Generated Secrets"

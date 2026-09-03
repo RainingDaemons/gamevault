@@ -10,8 +10,6 @@ import {
 /** @type {number} session lifetime in seconds (7 days) */
 const SESSION_TTL = 60 * 60 * 24 * 7;
 
-const isProd = process.env.NODE_ENV === 'production';
-
 /** @type {import('./$types').PageServerLoad} */
 export function load({ locals }) {
 	if (locals.authenticated) {
@@ -22,7 +20,7 @@ export function load({ locals }) {
 
 /** @type {import('./$types').Actions} */
 export const actions = {
-	default: async ({ request, cookies, getClientAddress }) => {
+	default: async ({ request, url, cookies, getClientAddress }) => {
 		const ip = getClientAddress();
 
 		if (isRateLimited(ip)) {
@@ -40,9 +38,19 @@ export const actions = {
 		resetRateLimit(ip);
 
 		const token = createSession();
+
+		// Only mark the cookie `Secure` when the client actually reaches us over
+		// HTTPS. Trust the proxy's forwarded proto when present (Caddy/Traefik/
+		// cloudflared); otherwise fall back to the request protocol, which
+		// adapter-node derives from ORIGIN.
+		const forwarded_proto = request.headers.get('x-forwarded-proto');
+		const secure = forwarded_proto
+			? forwarded_proto.split(',')[0].trim() === 'https'
+			: url.protocol === 'https:';
+
 		cookies.set('session', token, {
 			httpOnly: true,
-			secure: isProd,
+			secure,
 			sameSite: 'strict',
 			path: '/',
 			maxAge: SESSION_TTL
